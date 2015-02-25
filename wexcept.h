@@ -1,7 +1,6 @@
 #ifndef WEXCEPT_H
 #define WEXCEPT_H
 
-#pragma option push -w-inl
 class TWinException : public TException
 {
 public:
@@ -44,5 +43,4 @@ public:
 		LocalFree(MsgBuf);
 	}
 };
-#pragma option pop
 #endif //WEXCEPT_H

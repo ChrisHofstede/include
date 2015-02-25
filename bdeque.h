@@ -362,7 +362,7 @@ public:
 	}
 	TDequeIterator(const TDequeIterator& a)
 	{
-		deque = &a;
+		deque = a.deque;
 		current = a.current;
 	}
 	bool operator == (const TDequeIterator& a)
@@ -793,7 +793,7 @@ public:
 	}
 	TPtrDequeIterator(const TPtrDequeIterator& a)
 	{
-		deque = &a;
+		deque = a.deque;
 		current = a.current;
 	}
 	bool operator == (const TPtrDequeIterator& a)

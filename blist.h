@@ -6,8 +6,8 @@ namespace b {
 
 template <class T> class TList : TDeque<T>
 {
-	bool Search(TDeque<T>::TDLink* &ptr, const T& key);
-	bool Compare(TDeque<T>::TDLink* &ptr, const T& key);
+	bool Search(typename TDeque<T>::TDLink* &ptr, const T& key);
+	bool Compare(typename TDeque<T>::TDLink* &ptr, const T& key);
 	virtual int Compare(const T& a, const T& b) = 0;
 public:
 	typedef TDequeIterator<T> Iterator;
@@ -41,7 +41,7 @@ public:
 	}
 };
 
-template <class T> bool TList<T>::Search(TDeque<T>::TDLink* &ptr, const T& key)
+template <class T> bool TList<T>::Search(typename TDeque<T>::TDLink* &ptr, const T& key)
 {
 	bool bRet = false;
 	if(ptr)
@@ -53,14 +53,14 @@ template <class T> bool TList<T>::Search(TDeque<T>::TDLink* &ptr, const T& key)
 				bRet = true;
 				break;
 			}
-			ptr = RIGHT(ptr);
+			ptr = ptr->r;
 		}
-		while(ptr != first);
+		while(ptr != TDeque<T>::first);
 	}
 	return bRet;
 }
 
-template <class T> bool TList<T>::Compare(TDeque<T>::TDLink* &ptr, const T& key)
+template <class T> bool TList<T>::Compare(typename TDeque<T>::TDLink* &ptr, const T& key)
 {
 	bool bRet = false;
 	if(ptr)
@@ -72,9 +72,9 @@ template <class T> bool TList<T>::Compare(TDeque<T>::TDLink* &ptr, const T& key)
 				bRet = true;
 				break;
 			}
-			ptr = RIGHT(ptr);
+			ptr = ptr->r;
 		}
-		while(ptr != first);
+		while(ptr != TDeque<T>::first);
 	}
 	return bRet;
 }
@@ -82,16 +82,16 @@ template <class T> bool TList<T>::Compare(TDeque<T>::TDLink* &ptr, const T& key)
 template <class T> bool TList<T>::Add(const T& key)
 {
 	bool bRet = false;
-	TDLink* ptr = first;
+	typename TDeque<T>::TDLink* ptr = TDeque<T>::first;
 	if(!Search(ptr, key))
 	{
 		if(Compare(ptr, key))
 		{
-			bRet = Insert(ptr, key);
+			bRet = TDeque<T>::Insert(ptr, key);
 		}
 		else
 		{
-			bRet = PushEnd(key);
+			bRet = TDeque<T>::PushEnd(key);
 		}
 	}
 	return bRet;
@@ -100,7 +100,7 @@ template <class T> bool TList<T>::Add(const T& key)
 template <class T> bool TList<T>::Delete(const T& key)
 {
 	bool bRet = false;
-	TDLink* ptr = first;
+	typename TDeque<T>::TDLink* ptr = TDeque<T>::first;
 	if(Search(ptr, key))
 	{
 		TDeque<T>::Delete(ptr);
@@ -111,7 +111,7 @@ template <class T> bool TList<T>::Delete(const T& key)
 
 template <class T> bool TList<T>::Contains(const T& key)
 {
-	TDLink* ptr = first;
+	typename TDeque<T>::TDLink* ptr = TDeque<T>::first;
 	return Search(ptr, key);
 }
 
