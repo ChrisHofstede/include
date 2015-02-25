@@ -309,6 +309,7 @@ template <class T, HKEY hRootKey /*= HKEY_CURRENT_USER*/> class TRegEnumValue
 public:
 	TRegEnumValue()
 	{
+		hKey = 0;
 		bKeyValid = false;
 		szBuffer = 0;
 		dwBufferSize = 0;
@@ -377,6 +378,7 @@ template <class T, HKEY hRootKey /*= HKEY_CURRENT_USER*/> class TRegEnumKey
 public:
 	TRegEnumKey()
 	{
+		hKey = 0;
 		bKeyValid = false;
 		szBuffer = 0;
 		dwBufferSize = 0;

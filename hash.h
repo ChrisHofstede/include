@@ -6,8 +6,9 @@ class HashAlgorithm
     ulong _hash;
 
 // Constructor
-    HashAlgorithm()
+	HashAlgorithm()
     {
+		_hash = 0;
     }
 
 // Properties

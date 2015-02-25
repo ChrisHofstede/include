@@ -615,8 +615,7 @@ template<class T> T* unescape(const T* src) {
 // Class templates
 template<class T> class TStack {
 	struct link {
-		link(const T& a) :
-			Object(a) {
+		link(const T& a) : Ptr(0), Object(a) {
 		}
 		link* Ptr;
 		T Object;
@@ -698,7 +697,7 @@ template<class T> T& TStack<T>::operator[](int index) {
 template<class T> class TPtrStack {
 	struct link {
 		link(T* a) :
-			ObjectPtr(a) {
+			ObjectPtr(a), Ptr(0) {
 		}
 		link* Ptr;
 		T* ObjectPtr;

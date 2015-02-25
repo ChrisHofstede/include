@@ -11,6 +11,7 @@ template <class T> class TList : TDeque<T>
 	virtual int Compare(const T& a, const T& b) = 0;
 public:
 	typedef TDequeIterator<T> Iterator;
+	virtual ~TList() {}
 	bool Add(const T& key);
 	bool Delete(const T& key);
 	T& operator[](int index)

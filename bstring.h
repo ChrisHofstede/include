@@ -17,7 +17,7 @@ template<class T> class TString {
 		int l; // length of string
 		int bl; // length of buffer
 		srep() :
-			s(0), n(1), bl(0) {
+			s(0), n(1), l(0), bl(0) {
 		}
 	};
 	srep *p;

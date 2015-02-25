@@ -43,7 +43,7 @@ public:
 	TException(const wchar_t* msg) {
 		message = WideToAnsi(msg);
 	}
-	TException(TException& e) {
+	TException(const TException& e) {
 		message = b::strnewdup(e.message);
 	}
 	virtual ~TException() throw() {
@@ -67,10 +67,11 @@ public:
 	}
 };
 
-class TIndexOutOfRange: public TException {
+class TIndexOutOfRange : public TException {
 public:
-	TIndexOutOfRange() :
-		TException("Index out of range") {
+	TIndexOutOfRange() : TException((const char*)"Index out of range") {
+	}
+	TIndexOutOfRange(const TIndexOutOfRange& e) : TException((TException&)e) {
 	}
 };
 #endif //BEXCEPT_H

@@ -1,6 +1,7 @@
 #ifndef BBUFFER_H
 #define BBUFFER_H
-#include <bdeque>
+#include <bdeque.h>
+#include <butils.h>
 
 namespace b {
 

@@ -1,9 +1,9 @@
 #ifndef BNET_H
 #define BNET_H
-#include <winsock2>
-#include <ws2tcpip>
-#include <bassert>
-#include <buffer>
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#include <bassert.h>
+#include <buffer.h>
 
 #define VERSION_HIGH    2
 #define VERSION_LOW     2

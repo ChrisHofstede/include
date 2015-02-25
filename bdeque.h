@@ -3,9 +3,6 @@
 #include <bexcept.h>
 
 namespace b {
-// Defines
-#define RIGHT(a)	(a)->r
-#define LEFT(a)		(a)->l
 
 template <class T> class TDequeIterator;
 
@@ -14,12 +11,14 @@ template <class T> class TDeque
 protected:
 	struct dlink
 	{
-		dlink(const T& a) : Object(a) {}
+		dlink(const T& a) : r(0), l(0), Object(a)  {}
 		dlink* r;
 		dlink* l;
 		T Object;
 	};
+public:
 	typedef struct dlink TDLink;
+protected:
 	TDLink* first; // Points to the first object
 	void Copy(const TDeque& a);
 	bool Insert(TDLink* ptr, const T& object);
@@ -79,15 +78,15 @@ template <class T> bool TDeque<T>::PushEnd(const T& object)
 		TDLink* ptr = new TDLink(object);
 		if(first)
 		{
-			RIGHT(ptr) = first;
-			LEFT(ptr) = LEFT(first);
-			RIGHT(LEFT(first)) = ptr;
-			LEFT(first) = ptr;
+			ptr->r = first;
+			ptr->l = first->l;
+			(first->l)->r = ptr;
+			first->l = ptr;
 		}
 		else
 		{
-			RIGHT(ptr) = ptr;
-			LEFT(ptr) = ptr;
+			ptr->r = ptr;
+			ptr->l = ptr;
 			first = ptr;
 		}
 	}
@@ -105,15 +104,15 @@ template <class T> bool TDeque<T>::PushBegin(const T& object)
 		TDLink* ptr = new TDLink(object);
 		if(first)
 		{
-			RIGHT(ptr) = first;
-			LEFT(ptr) = LEFT(first);
-			RIGHT(LEFT(first)) = ptr;
-			LEFT(first) = ptr;
+			ptr->r = first;
+			ptr->l = first->l;
+			(first->l)->r = ptr;
+			first->l = ptr;
 		}
 		else
 		{
-			RIGHT(ptr) = ptr;
-			LEFT(ptr) = ptr;
+			ptr->r = ptr;
+			ptr->l = ptr;
 		}
 		first = ptr;
 	}
@@ -128,16 +127,16 @@ template <class T> bool TDeque<T>::PopEnd(T& object)
 {
 	if(first)
 	{
-		TDLink* ptr = LEFT(first);
+		TDLink* ptr = first->l;
 		object = ptr->Object;
-		if(first == RIGHT(first) || first == LEFT(first))
+		if(first == first->r || first == first->l)
 		{
 			first = 0;
 		}
 		else
 		{
-			LEFT(RIGHT(ptr)) = LEFT(ptr);
-			RIGHT(LEFT(ptr)) = RIGHT(ptr);
+			(ptr->r)->l = ptr->l;
+			(ptr->l)->r = ptr->r;
 		}
 		delete ptr;
 		return true;
@@ -151,15 +150,15 @@ template <class T> bool TDeque<T>::PopBegin(T& object)
 	{
 		TDLink* ptr = first;
 		object = ptr->Object;
-		if(first == RIGHT(first) || first == LEFT(first))
+		if(first == first->r || first == first->l)
 		{
 			first = 0;
 		}
 		else
 		{
-			LEFT(RIGHT(ptr)) = LEFT(ptr);
-			RIGHT(LEFT(ptr)) = RIGHT(ptr);
-			first = RIGHT(ptr);
+			(ptr->r)->l = ptr->l;
+			(ptr->l)->r = ptr->r;
+			first = ptr->r;
 		}
 		delete ptr;
 		return true;
@@ -175,7 +174,7 @@ template <class T> void TDeque<T>::Copy(const TDeque& a)
 		do
 		{
 			PushEnd(ptr->Object);
-			ptr = RIGHT(ptr);
+			ptr = ptr->r;
 		}
 		while(ptr != a.first);
 	}
@@ -186,10 +185,10 @@ template <class T> bool TDeque<T>::Insert(TDLink* ptr, const T& object)
 	try
 	{
 		TDLink* tmp = new TDLink(object);
-		RIGHT(tmp) = ptr;
-		LEFT(tmp) = LEFT(ptr);
-		RIGHT(LEFT(ptr)) = tmp;
-		LEFT(ptr) = tmp;
+		tmp->r = ptr;
+		tmp->l = ptr->l;
+		(ptr->l)->r = tmp;
+		ptr->l = tmp;
 		if(ptr == first)
 			first = tmp;
 	}
@@ -208,7 +207,7 @@ template <class T> bool TDeque<T>::Insert(int index, const T& object)
 		while(index > 0)
 		{
 			index--;
-			IndexPtr = RIGHT(IndexPtr);
+			IndexPtr = IndexPtr->r;
 			if(IndexPtr == first)
 				throw TIndexOutOfRange();
 		};
@@ -223,10 +222,10 @@ template <class T> bool TDeque<T>::Append(TDLink* ptr, const T& object)
 	try
 	{
 		TDLink* tmp = new TDLink(object);
-		RIGHT(tmp) = RIGHT(ptr);
-		LEFT(tmp) = ptr;
-		LEFT(RIGHT(ptr)) = tmp;
-		RIGHT(ptr) = tmp;
+		tmp->r = ptr->r;
+		tmp->l = ptr;
+		(ptr->r)->l = tmp;
+		ptr->r = tmp;
 	}
 	catch(std::bad_alloc&)
 	{
@@ -243,7 +242,7 @@ template <class T> bool TDeque<T>::Append(int index, const T& object)
 		while(index > 0)
 		{
 			index--;
-			IndexPtr = RIGHT(IndexPtr);
+			IndexPtr = IndexPtr->r;
 			if(IndexPtr == first)
 				throw TIndexOutOfRange();
 		};
@@ -255,16 +254,16 @@ template <class T> bool TDeque<T>::Append(int index, const T& object)
 
 template <class T> void TDeque<T>::Delete(TDLink* ptr)
 {
-	if(first == RIGHT(first) || first == LEFT(first))
+	if(first == first->r || first == first->l)
 	{
 		first = 0;
 	}
 	else
 	{
-		LEFT(RIGHT(ptr)) = LEFT(ptr);
-		RIGHT(LEFT(ptr)) = RIGHT(ptr);
+		(ptr->r)->l = ptr->l;
+		(ptr->l)->r = ptr->r;
 		if(ptr == first)
-			first = RIGHT(ptr);
+			first = ptr->r;
 	}
 	delete ptr;
 }
@@ -277,7 +276,7 @@ template <class T> void TDeque<T>::Delete(int index)
 		while(index > 0)
 		{
 			index--;
-			IndexPtr = RIGHT(IndexPtr);
+			IndexPtr = IndexPtr->r;
 			if(IndexPtr == first)
 				throw TIndexOutOfRange();
 		};
@@ -294,7 +293,7 @@ template <class T> void TDeque<T>::Flush()
 		TDLink* ptr = first;
 		do
 		{
-			TDLink* next = RIGHT(ptr);
+			TDLink* next = ptr->r;
 			delete ptr;
 			ptr = next;
 		}
@@ -312,7 +311,7 @@ template <class T> int TDeque<T>::Size() const
 		do
 		{
 			cCount++;
-			ptr = RIGHT(ptr);
+			ptr = ptr->r;
 		}
 		while(ptr != first);
 	}
@@ -327,7 +326,7 @@ template <class T> T& TDeque<T>::operator[](int index)
 		while(index > 0)
 		{
 			index--;
-			IndexPtr = RIGHT(IndexPtr);
+			IndexPtr = IndexPtr->r;
 			if(IndexPtr == first)
 				throw TIndexOutOfRange();
 		};
@@ -348,13 +347,13 @@ template <class T> T& TDeque<T>::Last()
 {
 	if(!first)
 		throw TIndexOutOfRange();
-	return LEFT(first)->Object;
+	return (first->l)->Object;
 }
 
 template <class T> class TDequeIterator
 {
 	TDeque<T>* deque;
-	TDeque<T>::TDLink* current;
+	typename TDeque<T>::TDLink* current;
 public:
 	TDequeIterator(TDeque<T>& a)
 	{
@@ -376,7 +375,7 @@ public:
 	}
 	void Last()
 	{
-		current = (deque->first) ?  LEFT(deque->first) : 0;
+		current = (deque->first) ?  (deque->first)->l : 0;
 	}
 	TDequeIterator& operator = (const TDequeIterator& a);
 	operator bool()
@@ -407,8 +406,8 @@ template <class T> T& TDequeIterator<T>::operator ++(int)
 {
 	if(!current)
 		throw TIndexOutOfRange();
-	TDeque<T>::TDLink* tmp = current;
-	current = RIGHT(current);
+	typename TDeque<T>::TDLink* tmp = current;
+	current = current->r;
 	if(current == deque->first)
 		current = 0;
 	return tmp->Object;
@@ -418,8 +417,8 @@ template <class T> T& TDequeIterator<T>::operator --(int)
 {
 	if(!current)
 		throw TIndexOutOfRange();
-	TDeque<T>::TDLink* tmp = current;
-	current = (current == deque->first) ? 0 : LEFT(current);
+	typename TDeque<T>::TDLink* tmp = current;
+	current = (current == deque->first) ? 0 : current->l;
 	return tmp->Object;
 }
 
@@ -427,8 +426,8 @@ template <class T> void TDequeIterator<T>::Delete()
 {
 	if(!current)
 		throw TIndexOutOfRange();
-	TDeque<T>::TDLink* tmp = current;
-	current = RIGHT(current);
+	typename TDeque<T>::TDLink* tmp = current;
+	current = current->r;
 	if(current == deque->first)
 		current = 0;
 	deque->Delete(tmp);
@@ -441,12 +440,14 @@ template <class T> class TPtrDeque
 protected:
 	struct dlink
 	{
-		dlink(T* a) : ObjectPtr(a) {}
+		dlink(T* a) : r(0), l(0), ObjectPtr(a){}
 		dlink* r;
 		dlink* l;
 		T* ObjectPtr;
 	};
+public:
 	typedef struct dlink TDLink;
+protected:
 	TDLink* first; // Points to the first object
 	void Copy(const TPtrDeque& a);
 	bool Insert(TDLink* ptr, T* object);
@@ -506,15 +507,15 @@ template <class T> bool TPtrDeque<T>::PushEnd(T* object)
 		TDLink* ptr = new TDLink(object);
 		if(first)
 		{
-			RIGHT(ptr) = first;
-			LEFT(ptr) = LEFT(first);
-			RIGHT(LEFT(first)) = ptr;
-			LEFT(first) = ptr;
+			ptr->r = first;
+			ptr->l = first->l;
+			(first->l)->r = ptr;
+			first->l = ptr;
 		}
 		else
 		{
-			RIGHT(ptr) = ptr;
-			LEFT(ptr) = ptr;
+			ptr->r = ptr;
+			ptr->l = ptr;
 			first = ptr;
 		}
 	}
@@ -532,15 +533,15 @@ template <class T> bool TPtrDeque<T>::PushBegin(T* object)
 		TDLink* ptr = new TDLink(object);
 		if(first)
 		{
-			RIGHT(ptr) = first;
-			LEFT(ptr) = LEFT(first);
-			RIGHT(LEFT(first)) = ptr;
-			LEFT(first) = ptr;
+			ptr->r = first;
+			ptr->l = first->l;
+			(first->l)->r = ptr;
+			first->l = ptr;
 		}
 		else
 		{
-			RIGHT(ptr) = ptr;
-			LEFT(ptr) = ptr;
+			ptr->r = ptr;
+			ptr->l = ptr;
 		}
 		first = ptr;
 	}
@@ -555,16 +556,16 @@ template <class T> bool TPtrDeque<T>::PopEnd(T** object)
 {
 	if(first)
 	{
-		TDLink* ptr = LEFT(first);
+		TDLink* ptr = first->l;
 		*object = ptr->ObjectPtr;
-		if(first == RIGHT(first) || first == LEFT(first))
+		if(first == first->r || first == first->l)
 		{
 			first = 0;
 		}
 		else
 		{
-			LEFT(RIGHT(ptr)) = LEFT(ptr);
-			RIGHT(LEFT(ptr)) = RIGHT(ptr);
+			(ptr->r)->l = ptr->l;
+			(ptr->l)->r = ptr->r;
 		}
 		delete ptr;
 		return true;
@@ -578,15 +579,15 @@ template <class T> bool TPtrDeque<T>::PopBegin(T** object)
 	{
 		TDLink* ptr = first;
 		*object = ptr->ObjectPtr;
-		if(first == RIGHT(first) || first == LEFT(first))
+		if(first == first->r || first == first->l)
 		{
 			first = 0;
 		}
 		else
 		{
-			LEFT(RIGHT(ptr)) = LEFT(ptr);
-			RIGHT(LEFT(ptr)) = RIGHT(ptr);
-			first = RIGHT(ptr);
+			(ptr->r)->l = ptr->l;
+			(ptr->l)->r = ptr->r;
+			first = ptr->r;
 		}
 		delete ptr;
 		return true;
@@ -601,8 +602,8 @@ template <class T> void TPtrDeque<T>::Copy(const TPtrDeque& a)
 		TDLink* ptr = a.first;
 		do
 		{
-			PushEnd(ptr->Object);
-			ptr = RIGHT(ptr);
+			PushEnd(ptr->ObjectPtr);
+			ptr = ptr->r;
 		}
 		while(ptr != a.first);
 	}
@@ -613,10 +614,10 @@ template <class T> bool TPtrDeque<T>::Insert(TDLink* ptr, T* object)
 	try
 	{
 		TDLink* tmp = new TDLink(object);
-		RIGHT(tmp) = ptr;
-		LEFT(tmp) = LEFT(ptr);
-		RIGHT(LEFT(ptr)) = tmp;
-		LEFT(ptr) = tmp;
+		tmp->r = ptr;
+		tmp->l = ptr->l;
+		(ptr->l)->r = tmp;
+		ptr->l = tmp;
 		if(ptr == first)
 			first = tmp;
 	}
@@ -635,7 +636,7 @@ template <class T> bool TPtrDeque<T>::Insert(int index, T* object)
 		while(index > 0)
 		{
 			index--;
-			IndexPtr = RIGHT(IndexPtr);
+			IndexPtr = IndexPtr->r;
 			if(IndexPtr == first)
 				throw TIndexOutOfRange();
 		};
@@ -650,10 +651,10 @@ template <class T> bool TPtrDeque<T>::Append(TDLink* ptr, T* object)
 	try
 	{
 		TDLink* tmp = new TDLink(object);
-		RIGHT(tmp) = RIGHT(ptr);
-		LEFT(tmp) = ptr;
-		LEFT(RIGHT(ptr)) = tmp;
-		RIGHT(ptr) = tmp;
+		tmp->r = ptr->r;
+		tmp->l = ptr;
+		(ptr->r)->l = tmp;
+		ptr->r = tmp;
 	}
 	catch(std::bad_alloc&)
 	{
@@ -671,7 +672,7 @@ template <class T> bool TPtrDeque<T>::Append(int index, T* object)
 		while(index > 0)
 		{
 			index--;
-			IndexPtr = RIGHT(IndexPtr);
+			IndexPtr = IndexPtr->r;
 			if(IndexPtr == first)
 				throw TIndexOutOfRange();
 		};
@@ -683,16 +684,16 @@ template <class T> bool TPtrDeque<T>::Append(int index, T* object)
 
 template <class T> void TPtrDeque<T>::Delete(TDLink* ptr)
 {
-	if(first == RIGHT(first) || first == LEFT(first))
+	if(first == first->r || first == first->l)
 	{
 		first = 0;
 	}
 	else
 	{
-		LEFT(RIGHT(ptr)) = LEFT(ptr);
-		RIGHT(LEFT(ptr)) = RIGHT(ptr);
+		(ptr->r)->l = ptr->l;
+		(ptr->l)->r = ptr->r;
 		if(ptr == first)
-			first = RIGHT(ptr);
+			first = ptr->r;
 	}
 	delete ptr;
 }
@@ -705,7 +706,7 @@ template <class T> void TPtrDeque<T>::Delete(int index)
 		while(index > 0)
 		{
 			index--;
-			IndexPtr = RIGHT(IndexPtr);
+			IndexPtr = IndexPtr->r;
 			if(IndexPtr == first)
 				throw TIndexOutOfRange();
 		};
@@ -722,7 +723,7 @@ template <class T> void TPtrDeque<T>::Flush()
 		TDLink* ptr = first;
 		do
 		{
-			TDLink* next = RIGHT(ptr);
+			TDLink* next = ptr->r;
 			//delete ptr->ObjectPtr; // Prevents memory leaks
 			delete ptr;
 			ptr = next;
@@ -741,7 +742,7 @@ template <class T> int TPtrDeque<T>::Size()
 		do
 		{
 			cCount++;
-			ptr = RIGHT(ptr);
+			ptr = ptr->r;
 		}
 		while(ptr != first);
 	}
@@ -756,7 +757,7 @@ template <class T> T* TPtrDeque<T>::operator[](int index)
 		while(index > 0)
 		{
 			index--;
-			IndexPtr = RIGHT(IndexPtr);
+			IndexPtr = IndexPtr->r;
 			if(IndexPtr == first)
 				throw TIndexOutOfRange();
 		};
@@ -769,7 +770,7 @@ template <class T> T* TPtrDeque<T>::operator[](int index)
 template <class T> T* TPtrDeque<T>::First()
 {
 	if(!first)
-		throw TIndexOutOfRange;
+		throw TIndexOutOfRange();
 	return first->ObjectPtr;
 }
 
@@ -777,13 +778,13 @@ template <class T> T* TPtrDeque<T>::Last()
 {
 	if(!first)
 		throw TIndexOutOfRange();
-	return LEFT(first)->ObjectPtr;
+	return (first->l)->ObjectPtr;
 }
 
 template <class T> class TPtrDequeIterator
 {
 	TPtrDeque<T>* deque;
-	TPtrDeque<T>::TDLink* current;
+	typename TPtrDeque<T>::TDLink* current;
 public:
 	TPtrDequeIterator(TPtrDeque<T>& a)
 	{
@@ -805,7 +806,7 @@ public:
 	}
 	void Last()
 	{
-		current = (deque->first) ?  LEFT(deque->first) : 0;
+		current = (deque->first) ?  (deque->first)->l : 0;
 	}
 	TPtrDequeIterator& operator = (const TPtrDequeIterator& a);
 	operator bool()
@@ -836,8 +837,8 @@ template <class T> T* TPtrDequeIterator<T>::operator ++(int)
 {
 	if(!current)
 		throw TIndexOutOfRange();
-	TPtrDeque<T>::TDLink* tmp = current;
-	current = RIGHT(current);
+	typename TPtrDeque<T>::TDLink* tmp = current;
+	current = current->r;
 	if(current == deque->first)
 		current = 0;
 	return tmp->ObjectPtr;
@@ -847,8 +848,8 @@ template <class T> T* TPtrDequeIterator<T>::operator --(int)
 {
 	if(!current)
 		throw TIndexOutOfRange();
-	TPtrDeque<T>::TDLink* tmp = current;
-	current = (current == deque->first) ? 0 : LEFT(current);
+	typename TPtrDeque<T>::TDLink* tmp = current;
+	current = (current == deque->first) ? 0 : current->l;
 	return tmp->ObjectPtr;
 }
 
@@ -856,8 +857,8 @@ template <class T> void TPtrDequeIterator<T>::Delete()
 {
 	if(!current)
 		throw TIndexOutOfRange();
-	TPtrDeque<T>::TDLink* tmp = current;
-	current = RIGHT(current);
+	typename TPtrDeque<T>::TDLink* tmp = current;
+	current = current->r;
 	if(current == deque->first)
 		current = 0;
 	deque->Delete(tmp);

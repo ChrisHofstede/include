@@ -1,7 +1,7 @@
 #ifndef COMPTR_H
 #define COMPTR_H
-#include <windows>
-#include <wexcept>
+#include <windows.h>
+#include <wexcept.h>
 
 //defines
 #define MKIID(a)  IID_##a

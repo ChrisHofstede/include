@@ -23,6 +23,7 @@ template <class T, class O = T> class TMap : TDeque<TPair<T, O> >
    bool Compare(TDeque<TPair<T, O> >::TDLink* &ptr, const T& key);
    virtual int Compare(const T& a, const T& b) = 0;
 public:
+   virtual ~TMap() {}
    bool Add(const T& key, const O& value);
    bool Delete(const T& key);
    O& operator[](const T& key);
