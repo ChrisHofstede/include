@@ -1,6 +1,6 @@
 #ifndef SCANFILE_H
 #define SCANFILE_H
-
+#include <windows.h>
 // Prototypes
 
 template<class T> class TScanFile {
