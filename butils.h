@@ -364,7 +364,7 @@ template<class T> bool CompareMask(const T* name, const T* mask) {
 template<class T> T* WideToAnsi(const wchar_t* String, int& nCount) {
 	int cChars = WideCharToMultiByte(CP_ACP, WC_COMPOSITECHECK, String, nCount,
 			0, 0, 0, 0);
-	T* Ansi;
+	T* Ansi = 0;
 	try {
 		Ansi = new T[cChars];
 		if (WideCharToMultiByte(CP_ACP, WC_COMPOSITECHECK, String, nCount,
@@ -383,7 +383,7 @@ template<class T> T* WideToAnsi(const wchar_t* String, int& nCount) {
 template<class T> wchar_t* AnsiToWide(const T* String, int& nCount) {
 	int cChars = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, String, nCount, 0,
 			0);
-	wchar_t* Wide;
+	wchar_t* Wide = 0;
 	try {
 		Wide = new wchar_t[cChars];
 		if (MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, String, nCount, Wide,
