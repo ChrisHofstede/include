@@ -38,6 +38,8 @@ public:
 	TStrStream& operator <<(const T* string);
 	TStrStream& operator <<(int number);
 	TStrStream& operator <<(unsigned number);
+	TStrStream& operator <<(long number);
+	TStrStream& operator <<(unsigned long number);
 	TStrStream& operator <<(T kar);
 	void gets(T* buffer, int cCount);
 	TResult getline(T *buffer, int cCount) {
@@ -146,6 +148,16 @@ template<class T> TStrStream<T>& TStrStream<T>::operator <<(int number) {
 }
 
 template<class T> TStrStream<T>& TStrStream<T>::operator <<(unsigned number) {
+	puts(TStrStream<T>::utostr(number));
+	return *this;
+}
+
+template<class T> TStrStream<T>& TStrStream<T>::operator <<(long number) {
+	puts(TStrStream<T>::itostr(number));
+	return *this;
+}
+
+template<class T> TStrStream<T>& TStrStream<T>::operator <<(unsigned long number) {
 	puts(TStrStream<T>::utostr(number));
 	return *this;
 }

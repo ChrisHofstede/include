@@ -914,11 +914,12 @@ template<class T> const T* TNrToString<T>::btohex(char number) {
 class TValue {
 public:
 	enum types {
-		undefined, pointer, dword, integer, word, byte
+		undefined, pointer, dword, longint, integer, word, byte
 	} type;
 	union numbers {
 		void* p;
 		unsigned long dw;
+		long l;
 		int i;
 		short w;
 		char b;
@@ -933,6 +934,10 @@ public:
 	TValue(unsigned long value) {
 		type = dword;
 		number.dw = value;
+	}
+	TValue(long value) {
+		type = longint;
+		number.l = value;
 	}
 	TValue(int value) {
 		type = integer;
@@ -965,6 +970,9 @@ template<class T> T& to_hex(T& s, const TValue& value) {
 	case TValue::dword:
 		s << s.ltohex(value.number.dw);
 		break;
+	case TValue::longint:
+		s << s.ltohex(value.number.l);
+		break;
 	case TValue::integer:
 		s << s.ltohex(value.number.i);
 		break;
@@ -973,6 +981,8 @@ template<class T> T& to_hex(T& s, const TValue& value) {
 		break;
 	case TValue::byte:
 		s << s.btohex(value.number.b);
+		break;
+	case TValue::undefined:
 		break;
 	}
 	return s;
