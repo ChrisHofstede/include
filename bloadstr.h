@@ -17,8 +17,10 @@ template<class T> int LoadString(TString<T>& wsDest, UINT uID,
 		HINSTANCE hInstance = ::GetModuleHandle(NULL)) {
 	PTCHAR wsBuf; // no need to initialize
 	wsDest.clear();
-	if (size_t len = ::LoadString(hInstance, uID, (PTCHAR) &wsBuf, 0))
-		wsDest = wsBuf;
+	if (size_t len = ::LoadString(hInstance, uID, (PTCHAR) &wsBuf, 0)) {
+		strncpy(wsDest.get_buffer(len + 1), wsBuf, len);
+		wsDest.fix_buffer();
+	}
 	return wsDest.length();
 }
 
