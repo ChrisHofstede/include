@@ -4,7 +4,7 @@
 
 namespace b {
 
-template<class T, class O = T> class TPair {
+template<class T, class O> class TPair {
 public:
 	TPair() {
 	}
@@ -16,7 +16,7 @@ public:
 	O Value;
 };
 
-template<class T, class O = T> class TMap: TDeque<TPair<T, O> > {
+template<class T, class O> class TMap: TDeque<TPair<T, O> > {
 public:
 	typedef typename TDeque<TPair<T, O> >::TDLink TLink;
 protected:
@@ -109,7 +109,7 @@ template<class T, class O> bool TMap<T, O>::Contains(const T& key) {
 	return Search(ptr, key);
 }
 
-template<class T, class O = T> class TStringMap: public TMap<T, O> {
+template<class T, class O> class TStringMap: public TMap<T, O> {
 	int Compare(const T& a, const T& b) {
 		return (bIgnoreCase) ? a.compare(b) : a.compare_ignore_case(b);
 	}
@@ -122,8 +122,7 @@ public:
 	T GetKeyValuePair(const T& key);
 };
 
-template<class T, class O = T> T TStringMap<T, O>::AddKeyValuePair(
-		const T& pair) {
+template<class T, class O> T TStringMap<T, O>::AddKeyValuePair(const T& pair) {
 	T key;
 	O value;
 	int index = pair.first_index('=');
@@ -134,15 +133,14 @@ template<class T, class O = T> T TStringMap<T, O>::AddKeyValuePair(
 		key = pair.trim();
 		value.clear();
 	}
-	Add(key, value);
+	TMap<T, O>::Add(key, value);
 	return key;
 }
 
-template<class T, class O = T> T TStringMap<T, O>::GetKeyValuePair(
-		const T& key) {
+template<class T, class O> T TStringMap<T, O>::GetKeyValuePair(const T& key) {
 	T pair = key + '=';
-	if (Contains(key)) {
-		pair += operator[](key);
+	if (TMap<T, O>::Contains(key)) {
+		pair += TMap<T, O>::operator[](key);
 	}
 	return pair;
 }
