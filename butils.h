@@ -873,7 +873,7 @@ template<class T> const T* TNrToString<T>::utostr(unsigned long number) {
 
 template<class T> const T* TNrToString<T>::ltohex(long number) {
 	T* p = buffer;
-	for (int i = 0; i < sizeof(number) * 2; i++) {
+	for (unsigned int i = 0; i < sizeof(number) * 2; i++) {
 		*p++ = tohex(number);
 		number >>= 4;
 	}
@@ -886,7 +886,7 @@ template<class T> const T* TNrToString<T>::ltohex(long number) {
 
 template<class T> const T* TNrToString<T>::wtohex(short number) {
 	T* p = buffer;
-	for (int i = 0; i < sizeof(number) * 2; i++) {
+	for (unsigned int i = 0; i < sizeof(number) * 2; i++) {
 		*p++ = tohex(number);
 		number >>= 4;
 	}
@@ -899,7 +899,7 @@ template<class T> const T* TNrToString<T>::wtohex(short number) {
 
 template<class T> const T* TNrToString<T>::btohex(char number) {
 	T* p = buffer;
-	for (int i = 0; i < sizeof(number) * 2; i++) {
+	for (unsigned int i = 0; i < sizeof(number) * 2; i++) {
 		*p++ = tohex(number);
 		number >>= 4;
 	}
