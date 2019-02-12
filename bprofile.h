@@ -1,7 +1,6 @@
 #ifndef BPROFILE_H
 #define BPROFILE_H
-#include <windows.h>
-#include <bstring.h>
+#include "bstring.h"
 
 #define DOTINI       TEXT(".ini")
 #define BUF_INC   40

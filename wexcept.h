@@ -1,5 +1,6 @@
 #ifndef WEXCEPT_H
 #define WEXCEPT_H
+#include "bexcept.h"
 
 class TWinException : public TException
 {

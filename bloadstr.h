@@ -7,8 +7,7 @@
 
 #ifndef BLOADSTR_H_
 #define BLOADSTR_H_
-#include <bstring.h>
-#include <windows.h>
+#include "bstring.h"
 
 namespace b {
 

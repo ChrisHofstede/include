@@ -1,6 +1,6 @@
 #ifndef HELP_H
 #define HELP_H
-#include <htmlhelp.h>
+#include "htmlhelp.h"
 
 // Helper class
 class THtmlHelpLibLoader

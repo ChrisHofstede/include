@@ -1,7 +1,7 @@
 #ifndef FILE_H
 #define FILE_H
 #include <windows.h>
-#include <bstring.h>
+#include "bstring.h"
 
 namespace b {
 

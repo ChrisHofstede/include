@@ -1,6 +1,7 @@
 #ifndef BSTRSTRE_H
 #define BSTRSTRE_H
 #include "butils.h"
+#include "bstring.h"
 
 namespace b {
 

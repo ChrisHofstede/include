@@ -1,6 +1,6 @@
 #ifndef BLIST_H
 #define BLIST_H
-#include <bdeque.h>
+#include "bdeque.h"
 
 namespace b {
 

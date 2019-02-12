@@ -1,14 +1,14 @@
 #ifndef BBUFFER_H
 #define BBUFFER_H
-#include <bdeque.h>
-#include <butils.h>
+#include "bdeque.h"
+#include "butils.h"
 
 namespace b {
 
 template <class T> class TMemoryBlock
 {
-   T* MemPtr;
-   int Size;
+   T* MemPtr = 0;
+   int Size = 0;
    inline void CopyBlock(const T* ptr, int size)
    {
       try
@@ -24,11 +24,6 @@ template <class T> class TMemoryBlock
       }
    }
 public:
-   TMemoryBlock()
-   {
-      Size = 0;
-      MemPtr = 0;
-   }
    TMemoryBlock(const T* ptr, int size)
    {
       CopyBlock(ptr, size);

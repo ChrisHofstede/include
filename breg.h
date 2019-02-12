@@ -1,6 +1,6 @@
 #ifndef BREG_H
 #define BREG_H
-#include <windows.h>
+#include "bstring.h"
 
 namespace b {
 

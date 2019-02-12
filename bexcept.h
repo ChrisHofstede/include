@@ -2,7 +2,8 @@
 #define BEXCEPT_H
 #include <exception>
 #include <errno.h>
-#include <butils.h>
+#include <string.h>
+#include "butils.h"
 
 // Defines
 #define NEWLINE			":\n"

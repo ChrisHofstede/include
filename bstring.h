@@ -1,5 +1,6 @@
 #ifndef BSTRING_H
 #define BSTRING_H
+#include <windows.h>
 #include "bexcept.h"
 
 namespace b {

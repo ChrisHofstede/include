@@ -1,5 +1,6 @@
 #ifndef ELLIPSIS_H
 #define ELLIPSIS_H
+#include <windows.h>
 
 /**
  * Algorithm

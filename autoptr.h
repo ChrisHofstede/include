@@ -1,5 +1,6 @@
 #ifndef AUTOPTR_H
 #define AUTOPTR_H
+#include <exception>
 
 class exception: public std::exception {
 	const char* message;

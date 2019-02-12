@@ -1,7 +1,7 @@
 #ifndef WCONSOLE_H
 #define WCONSOLE_H
-#include <bprocess.h>
-#include <bstring.h>
+#include "bprocess.h"
+#include "bstring.h"
 
 using b::TValue;
 using b::TManip;

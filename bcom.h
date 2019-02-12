@@ -1,6 +1,8 @@
 #ifndef BCOM_H
 #define BCOM_H
 #include <objbase.h>
+#include "butils.h"
+#include "bexcept.h"
 
 // Forward declaration
 class TComException;

@@ -1,6 +1,6 @@
 #ifndef BDEQUE_H
 #define BDEQUE_H
-#include <bexcept.h>
+#include "bexcept.h"
 
 namespace b {
 

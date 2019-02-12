@@ -1,6 +1,7 @@
 #ifndef BMAP_H
 #define BMAP_H
-#include <bdeque.h>
+#include "bdeque.h"
+#include "bstring.h"
 
 namespace b {
 

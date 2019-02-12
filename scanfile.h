@@ -1,6 +1,7 @@
 #ifndef SCANFILE_H
 #define SCANFILE_H
-#include <windows.h>
+#include "butils.h"
+#include "bstring.h"
 // Prototypes
 
 template<class T> class TScanFile {

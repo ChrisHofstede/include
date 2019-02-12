@@ -1,6 +1,7 @@
 #ifndef BROWSE_H
 #define BROWSE_H
 #include <shlobj.h>
+#include "bstring.h"
 
 template<class T> class TBrowseForFolder {
 	LPMALLOC pMalloc;

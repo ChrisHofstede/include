@@ -1,7 +1,7 @@
 #ifndef FILEDLG_H
 #define FILEDLG_H
 #include <windows.h>
-#include <bstring.h>
+#include "bstring.h"
 
 namespace b {
 
