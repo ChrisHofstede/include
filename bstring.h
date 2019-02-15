@@ -203,7 +203,7 @@ template<class T> T& TString<T>::operator[](int i) {
 }
 
 template<class T> const T& TString<T>::operator[](int i) const {
-	if (i < 0 || p->l < i) {
+	if (i < 0 || i >= p->l) {
 		TIndexOutOfRange e;
 		throw e;
 	}
